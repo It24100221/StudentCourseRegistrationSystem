@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create New Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-container label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #006d9c;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Create New Student</h2>
+    <form id="studentForm" th:action="@{/student}" th:object="${student}" method="POST">
+        <label for="firstName">Student First Name</label>
+        <input type="text" id="firstName" th:field="*{firstName}" placeholder="Enter student first name" required>
+
+        <label for="lastName">Student Last Name</label>
+        <input type="text" id="lastName" th:field="*{lastName}" placeholder="Enter student last name" required>
+
+        <label for="email">Student Email</label>
+        <input type="email" id="email" th:field="*{email}" placeholder="Enter student email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" th:field="*{password}" placeholder="Enter student password" required>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("studentForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        const form = this;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/home"; // Redirect to home page after successful registration
+            } else {
+                console.error("Error submitting form:", response.statusText);
+                alert("Registration failed. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+        });
+    });
+</script>
+</body>
+</html>
