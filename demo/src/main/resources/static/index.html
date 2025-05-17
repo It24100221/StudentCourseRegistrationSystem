@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Support System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h1>📚 Student Support System</h1>
+
+    <form id="supportForm">
+        <div class="form-group">
+            <label for="studentName">Name</label>
+            <input type="text" id="studentName" placeholder="Enter your name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="type">Support Type</label>
+            <select id="type">
+                <option value="Academic">Academic</option>
+                <option value="Technical">Technical</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Describe your issue..." required></textarea>
+        </div>
+
+        <button type="submit">📤 Submit Request</button>
+    </form>
+
+    <h2>📄 All Support Requests</h2>
+    <ul id="supportList"></ul>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
