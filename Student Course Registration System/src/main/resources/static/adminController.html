@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - University Management</title>
+    <style>
+        :root {
+            --primary-color: #1d293a;
+            --secondary-color: #124159;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #273550;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .nav-menu li a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .nav-menu li a.active {
+            background-color: var(--secondary-color);
+        }
+
+        .nav-menu li a.logout {
+            background-color: var(--danger-color);
+        }
+
+        .nav-menu li a.logout:hover {
+            background-color: #c0392b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1, h2 {
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        .btn {
+            padding: 0.5rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 8px;
+            overflow: hidden;
+            animation: modalopen 0.5s;
+        }
+
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            background-color: var(--dark-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .course-form, .lecture-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message {
+            display: none;
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+
+            .action-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Admin Panel - University Management</h1>
+</header>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="enrollment.html">Enrollment</a></li>
+        <li><a href="feedback.html">Feedback</a></li>
+        <li><a href="support.html">Support</a></li>
+        <li><a href="login.html" class="logout">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <!-- Student Management Section -->
+    <div class="section">
+        <h2>Student Management</h2>
+        <p>Manage registered students with create, read, update, and delete operations.</p>
+
+        <div class="alert alert-success hidden" id="studentSuccessAlert">
+            Operation completed successfully!
+        </div>
+        <div class="alert alert-danger hidden" id="studentErrorAlert">
+            An error occurred. Please try again.
+        </div>
+
+        <button class="btn btn-primary" id="addStudentBtn">Add New Student</button>
+
+        <table id="studentTable">
+            <thead>
+            <tr>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Registration Time</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Student data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Course Management Section -->
+    <div class="section">
+        <h2>Course Management</h2>
+        <p>Create new courses for the University Course Registration system.</p>
+        <button class="btn btn-primary" id="createCourseBtn">Create New Course</button>
+    </div>
+
+    <!-- Lecture Management Section -->
+    <div class="section">
+        <h2>Lecture Management</h2>
+        <p>Manage lectures with create, read, update, and delete operations.</p>
+
+        <div class="alert alert-success hidden" id="lectureSuccessAlert">
+            Operation completed successfully!
+        </div>
+        <div class="alert alert-danger hidden" id="lectureErrorAlert">
+            An error occurred. Please try again.
+        </div>
+
+        <button class="btn btn-primary" id="addLectureBtn">Add New Lecture</button>
+
+        <table id="lectureTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Course</th>
+                <th>Lecturer</th>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Lecture data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Student Modal -->
+<div id="studentModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="studentModalTitle">Add New Student</h2>
+            <span class="close-btn">×</span>
+        </div>
+        <div class="modal-body">
+            <form id="studentForm">
+                <input type="hidden" id="studentEmail">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelStudent">Cancel</button>
+            <button class="btn btn-primary" id="saveStudent">Save Student</button>
+        </div>
+    </div>
+</div>
+
+<!-- Create Course Modal -->
+<div id="createCourseModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Create New Course</h2>
+            <span class="close-btn">×</span>
+        </div>
+        <div class="modal-body">
+            <div class="success-message" id="createSuccessMessage">
+                Course created successfully!
+            </div>
+            <form id="createCourseForm" class="course-form">
+                <div class="form-group">
+                    <label for="createTitle">Title</label>
+                    <input type="text" id="createTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="createInstructor">Instructor</label>
+                    <input type="text" id="createInstructor" required>
+                </div>
+                <div class="form-group">
+                    <label for="createPrice">Price</label>
+                    <input type="number" id="createPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="createDuration">Duration (weeks)</label>
+                    <input type="number" id="createDuration" required>
+                </div>
+                <div class="form-group">
+                    <label for="createDescription">Description</label>
+                    <textarea id="createDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="createLearningPoints">Learning Points (one per line)</label>
+                    <textarea id="createLearningPoints" required></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelCreateCourse">Cancel</button>
+            <button class="btn btn-primary" id="confirmCreateCourse">Create Course</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Lecture Modal -->
+<div id="lectureModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="lectureModalTitle">Add New Lecture</h2>
+            <span class="close-btn">×</span>
+        </div>
+        <div class="modal-body">
+            <form id="lectureForm" class="lecture-form">
+                <input type="hidden" id="lectureId">
+                <div class="form-group">
+                    <label for="courseName">Course Name</label>
+                    <select id="courseName" required>
+                        <option value="">Select Course</option>
+                        <!-- Courses will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lecturerName">Lecturer</label>
+                    <input type="text" id="lecturerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lectureDay">Day</label>
+                    <select id="lectureDay" required>
+                        <option value="">Select Day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lectureTime">Time</label>
+                    <input type="time" id="lectureTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="lectureDuration">Duration (minutes)</label>
+                    <input type="number" id="lectureDuration" min="30" max="240" value="60" required>
+                </div>
+                <div class="form-group">
+                    <label for="lectureLocation">Location</label>
+                    <input type="text" id="lectureLocation" placeholder="e.g., Building A, Room 101" required>
+                </div>
+                <div class="form-group">
+                    <label for="lectureDescription">Description (Optional)</label>
+                    <textarea id="lectureDescription" placeholder="Additional notes about the lecture"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelLecture">Cancel</button>
+            <button class="btn btn-primary" id="saveLecture">Save Lecture</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2>Confirm Action</h2>
+            <span class="close-btn">×</span>
+        </div>
+        <div class="modal-body">
+            <p id="confirmMessage">Are you sure you want to perform this action?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelConfirm">Cancel</button>
+            <button class="btn btn-danger" id="confirmAction">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DOM Elements for Student Management
+    const studentTable = document.getElementById('studentTable').querySelector('tbody');
+    const addStudentBtn = document.getElementById('addStudentBtn');
+    const studentModal = document.getElementById('studentModal');
+    const studentForm = document.getElementById('studentForm');
+    const studentSuccessAlert = document.getElementById('studentSuccessAlert');
+    const studentErrorAlert = document.getElementById('studentErrorAlert');
+    const studentModalTitle = document.getElementById('studentModalTitle');
+    const cancelStudent = document.getElementById('cancelStudent');
+    const saveStudent = document.getElementById('saveStudent');
+
+    // DOM Elements for Course Management
+    const createCourseModal = document.getElementById('createCourseModal');
+    const createCourseBtn = document.getElementById('createCourseBtn');
+    const cancelCreateCourse = document.getElementById('cancelCreateCourse');
+    const confirmCreateCourse = document.getElementById('confirmCreateCourse');
+    const createCourseForm = document.getElementById('createCourseForm');
+    const createSuccessMessage = document.getElementById('createSuccessMessage');
+
+    // DOM Elements for Lecture Management
+    const lectureTable = document.getElementById('lectureTable').querySelector('tbody');
+    const addLectureBtn = document.getElementById('addLectureBtn');
+    const lectureModal = document.getElementById('lectureModal');
+    const lectureForm = document.getElementById('lectureForm');
+    const lectureSuccessAlert = document.getElementById('lectureSuccessAlert');
+    const lectureErrorAlert = document.getElementById('lectureErrorAlert');
+    const lectureModalTitle = document.getElementById('lectureModalTitle');
+    const cancelLecture = document.getElementById('cancelLecture');
+    const saveLecture = document.getElementById('saveLecture');
+
+    // DOM Elements for Confirmation Modal
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmMessage = document.getElementById('confirmMessage');
+    const cancelConfirm = document.getElementById('cancelConfirm');
+    const confirmAction = document.getElementById('confirmAction');
+    const closeBtns = document.querySelectorAll('.close-btn');
+
+    // Variables for current actions
+    let currentStudentAction = '';
+    let currentStudentEmail = null;
+    let currentLectureAction = '';
+    let currentLectureId = null;
+    let confirmCallback = null;
+
+    // Initialize the application
+    async function initApp() {
+        await loadStudents();
+        await loadLectures();
+        await loadCoursesForForm();
+        setupEventListeners();
+    }
+
+    // --- Student Management Functions ---
+
+    async function loadStudents() {
+        try {
+            const response = await fetch('http://localhost:9091/api/users');
+            if (!response.ok) throw new Error('Failed to fetch students');
+            const students = await response.json();
+            renderStudentTable(students);
+        } catch (error) {
+            showAlert(studentErrorAlert, 'danger', 'Failed to load students');
+        }
+    }
+
+    function renderStudentTable(students) {
+        studentTable.innerHTML = '';
+
+        if (students.length === 0) {
+            const row = document.createElement('tr');
+            row.innerHTML = '<td colspan="4" style="text-align: center;">No students to manage</td>';
+            studentTable.appendChild(row);
+            return;
+        }
+
+        students.forEach(student => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${student.email}</td>
+                <td>${student.fullName}</td>
+                <td>${new Date(student.registrationTime).toLocaleString()}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-warning edit-student-btn" data-email="${student.email}">Edit</button>
+                        <button class="btn btn-danger delete-student-btn" data-email="${student.email}">Delete</button>
+                    </div>
+                </td>
+            `;
+            studentTable.appendChild(row);
+        });
+
+        document.querySelectorAll('.edit-student-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const email = e.target.getAttribute('data-email');
+                editStudent(email);
+            });
+        });
+
+        document.querySelectorAll('.delete-student-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const email = e.target.getAttribute('data-email');
+                confirmStudentDelete(email);
+            });
+        });
+    }
+
+    function addNewStudent() {
+        currentStudentAction = 'add';
+        studentForm.reset();
+        document.getElementById('studentEmail').value = '';
+        studentModalTitle.textContent = 'Add New Student';
+        studentModal.style.display = 'block';
+    }
+
+    async function editStudent(email) {
+        try {
+            const response = await fetch(`http://localhost:9091/api/users/${email}`);
+            if (!response.ok) throw new Error('Failed to fetch student');
+            const student = await response.json();
+
+            currentStudentAction = 'edit';
+            currentStudentEmail = email;
+
+            document.getElementById('studentEmail').value = student.email;
+            document.getElementById('email').value = student.email;
+            document.getElementById('fullName').value = student.fullName;
+            document.getElementById('password').value = student.password;
+
+            studentModalTitle.textContent = 'Edit Student';
+            studentModal.style.display = 'block';
+        } catch (error) {
+            showAlert(studentErrorAlert, 'danger', 'Failed to load student details');
+        }
+    }
+
+    function confirmStudentDelete(email) {
+        currentStudentEmail = email;
+        confirmMessage.textContent = 'Are you sure you want to delete this student?';
+        confirmCallback = deleteStudent;
+        confirmModal.style.display = 'block';
+    }
+
+    async function saveStudentHandler() {
+        if (!studentForm.checkValidity()) {
+            studentForm.reportValidity();
+            return;
+        }
+
+        const studentData = {
+            email: document.getElementById('email').value,
+            fullName: document.getElementById('fullName').value,
+            password: document.getElementById('password').value
+        };
+
+        try {
+            let response;
+            if (currentStudentAction === 'add') {
+                response = await fetch('http://localhost:9091/api/users/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(studentData)
+                });
+            } else {
+                response = await fetch(`http://localhost:9091/api/users/${currentStudentEmail}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(studentData)
+                });
+            }
+
+            if (!response.ok) throw new Error('Operation failed');
+
+            showAlert(studentSuccessAlert, 'success', currentStudentAction === 'add' ? 'Student added successfully!' : 'Student updated successfully!');
+            studentModal.style.display = 'none';
+            await loadStudents();
+        } catch (error) {
+            showAlert(studentErrorAlert, 'danger', 'Operation failed. Please try again.');
+        }
+    }
+
+    async function deleteStudent() {
+        try {
+            const response = await fetch(`http://localhost:9091/api/users/${currentStudentEmail}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Deletion failed');
+
+            showAlert(studentSuccessAlert, 'success', 'Student deleted successfully!');
+            confirmModal.style.display = 'none';
+            await loadStudents();
+        } catch (error) {
+            showAlert(studentErrorAlert, 'danger', 'Deletion failed. Please try again.');
+        }
+    }
+
+    // --- Course Management Functions ---
+
+    async function createCourseHandler() {
+        if (!createCourseForm.checkValidity()) {
+            createCourseForm.reportValidity();
+            return;
+        }
+
+        try {
+            const courseData = {
+                title: document.getElementById('createTitle').value,
+                instructor: document.getElementById('createInstructor').value,
+                price: parseFloat(document.getElementById('createPrice').value),
+                duration: parseInt(document.getElementById('createDuration').value),
+                description: document.getElementById('createDescription').value,
+                learningPoints: document.getElementById('createLearningPoints').value.split('\n').filter(point => point.trim())
+            };
+
+            const response = await fetch('http://localhost:9091/api/courses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(courseData)
+            });
+
+            if (!response.ok) throw new Error('Failed to create course');
+
+            createSuccessMessage.style.display = 'block';
+            createCourseForm.reset();
+
+            setTimeout(() => {
+                createSuccessMessage.style.display = 'none';
+                createCourseModal.style.display = 'none';
+                loadCoursesForForm();
+            }, 3000);
+        } catch (error) {
+            createSuccessMessage.style.display = 'block';
+            createSuccessMessage.style.backgroundColor = 'var(--danger-color)';
+            createSuccessMessage.textContent = 'Failed to create course. Please try again.';
+            setTimeout(() => {
+                createSuccessMessage.style.display = 'none';
+                createSuccessMessage.style.backgroundColor = 'var(--success-color)';
+                createSuccessMessage.textContent = 'Course created successfully!';
+            }, 3000);
+        }
+    }
+
+    // --- Lecture Management Functions ---
+
+    async function loadLectures() {
+        try {
+            const response = await fetch('http://localhost:9091/api/lectures');
+            if (!response.ok) throw new Error('Failed to fetch lectures');
+            const lectures = await response.json();
+            renderLectureTable(lectures);
+        } catch (error) {
+            lectureTable.innerHTML = '<tr><td colspan="7" style="text-align: center;">Failed to load lectures. Please try again.</td></tr>';
+        }
+    }
+
+    function renderLectureTable(lectures) {
+        lectureTable.innerHTML = '';
+
+        if (lectures.length === 0) {
+            const row = document.createElement('tr');
+            row.innerHTML = '<td colspan="7" style="text-align: center;">No lectures to manage</td>';
+            lectureTable.appendChild(row);
+            return;
+        }
+
+        lectures.forEach(lecture => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${lecture.id}</td>
+                <td>${lecture.course}</td>
+                <td>${lecture.lecturer}</td>
+                <td>${lecture.day}</td>
+                <td>${lecture.time}</td>
+                <td>${lecture.location}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-warning edit-lecture-btn" data-id="${lecture.id}">Edit</button>
+                        <button class="btn btn-danger delete-lecture-btn" data-id="${lecture.id}">Delete</button>
+                    </div>
+                </td>
+            `;
+            lectureTable.appendChild(row);
+        });
+
+        document.querySelectorAll('.edit-lecture-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.getAttribute('data-id'));
+                editLecture(id);
+            });
+        });
+
+        document.querySelectorAll('.delete-lecture-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.getAttribute('data-id'));
+                confirmLectureDelete(id);
+            });
+        });
+    }
+
+    async function loadCoursesForForm() {
+        try {
+            const response = await fetch('http://localhost:9091/api/courses');
+            if (!response.ok) throw new Error('Failed to fetch courses');
+            const courses = await response.json();
+            const courseSelect = document.getElementById('courseName');
+            courseSelect.innerHTML = '<option value="">Select Course</option>';
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.title;
+                option.textContent = course.title;
+                courseSelect.appendChild(option);
+            });
+        } catch (error) {
+            showAlert(lectureErrorAlert, 'danger', 'Failed to load courses');
+        }
+    }
+
+    function addNewLecture() {
+        currentLectureAction = 'add';
+        lectureForm.reset();
+        document.getElementById('lectureId').value = '';
+        lectureModalTitle.textContent = 'Add New Lecture';
+        lectureModal.style.display = 'block';
+    }
+
+    async function editLecture(id) {
+        try {
+            const response = await fetch(`http://localhost:9091/api/lectures/${id}`);
+            if (!response.ok) throw new Error('Failed to fetch lecture');
+            const lecture = await response.json();
+
+            currentLectureAction = 'edit';
+            currentLectureId = id;
+
+            document.getElementById('lectureId').value = lecture.id;
+            document.getElementById('courseName').value = lecture.course;
+            document.getElementById('lecturerName').value = lecture.lecturer;
+            document.getElementById('lectureDay').value = lecture.day;
+            document.getElementById('lectureTime').value = lecture.time;
+            document.getElementById('lectureDuration').value = lecture.duration;
+            document.getElementById('lectureLocation').value = lecture.location;
+            document.getElementById('lectureDescription').value = lecture.description || '';
+
+            lectureModalTitle.textContent = 'Edit Lecture';
+            lectureModal.style.display = 'block';
+        } catch (error) {
+            showAlert(lectureErrorAlert, 'danger', 'Failed to load lecture');
+        }
+    }
+
+    function confirmLectureDelete(id) {
+        currentLectureId = id;
+        confirmMessage.textContent = 'Are you sure you want to delete this lecture?';
+        confirmCallback = deleteLecture;
+        confirmModal.style.display = 'block';
+    }
+
+    async function saveLectureHandler() {
+        if (!lectureForm.checkValidity()) {
+            lectureForm.reportValidity();
+            return;
+        }
+
+        const lectureData = {
+            id: currentLectureAction === 'edit' ? currentLectureId : 0,
+            course: document.getElementById('courseName').value,
+            lecturer: document.getElementById('lecturerName').value,
+            day: document.getElementById('lectureDay').value,
+            time: document.getElementById('lectureTime').value,
+            duration: parseInt(document.getElementById('lectureDuration').value),
+            location: document.getElementById('lectureLocation').value,
+            description: document.getElementById('lectureDescription').value
+        };
+
+        try {
+            const method = currentLectureAction === 'add' ? 'POST' : 'PUT';
+            const url = currentLectureAction === 'add' ? 'http://localhost:9091/api/lectures' : `http://localhost:9091/api/lectures/${currentLectureId}`;
+
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(lectureData)
+            });
+
+            if (!response.ok) throw new Error(`Failed to ${currentLectureAction === 'add' ? 'create' : 'update'} lecture`);
+
+            showAlert(lectureSuccessAlert, 'success', `Lecture ${currentLectureAction === 'add' ? 'added' : 'updated'} successfully!`);
+            lectureModal.style.display = 'none';
+            await loadLectures();
+        } catch (error) {
+            showAlert(lectureErrorAlert, 'danger', `Failed to ${currentLectureAction === 'add' ? 'create' : 'update'} lecture`);
+        }
+    }
+
+    async function deleteLecture() {
+        try {
+            const response = await fetch(`http://localhost:9091/api/lectures/${currentLectureId}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) throw new Error('Failed to delete lecture');
+
+            showAlert(lectureSuccessAlert, 'success', 'Lecture deleted successfully!');
+            confirmModal.style.display = 'none';
+            await loadLectures();
+        } catch (error) {
+            showAlert(lectureErrorAlert, 'danger', 'Failed to delete lecture');
+        }
+    }
+
+    // --- Utility Functions ---
+
+    function showAlert(element, type, message) {
+        element.textContent = message;
+        element.classList.remove('hidden', 'alert-success', 'alert-danger');
+        element.classList.add(`alert-${type}`);
+
+        setTimeout(() => {
+            element.classList.add('hidden');
+        }, 3000);
+    }
+
+    // --- Event Listeners ---
+
+    function setupEventListeners() {
+        // Student Management
+        addStudentBtn.addEventListener('click', addNewStudent);
+        cancelStudent.addEventListener('click', () => {
+            studentModal.style.display = 'none';
+        });
+        saveStudent.addEventListener('click', saveStudentHandler);
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveStudentHandler();
+        });
+
+        // Course Management
+        createCourseBtn.addEventListener('click', () => {
+            createCourseForm.reset();
+            createSuccessMessage.style.display = 'none';
+            createCourseModal.style.display = 'block';
+        });
+        cancelCreateCourse.addEventListener('click', () => {
+            createCourseModal.style.display = 'none';
+        });
+        confirmCreateCourse.addEventListener('click', createCourseHandler);
+
+        // Lecture Management
+        addLectureBtn.addEventListener('click', addNewLecture);
+        cancelLecture.addEventListener('click', () => {
+            lectureModal.style.display = 'none';
+        });
+        saveLecture.addEventListener('click', saveLectureHandler);
+        lectureForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveLectureHandler();
+        });
+
+        // Confirmation Modal
+        cancelConfirm.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
+        confirmAction.addEventListener('click', () => {
+            if (confirmCallback) confirmCallback();
+        });
+
+        // Modal Close
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                studentModal.style.display = 'none';
+                createCourseModal.style.display = 'none';
+                lectureModal.style.display = 'none';
+                confirmModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === studentModal) studentModal.style.display = 'none';
+            if (e.target === createCourseModal) createCourseModal.style.display = 'none';
+            if (e.target === lectureModal) lectureModal.style.display = 'none';
+            if (e.target === confirmModal) confirmModal.style.display = 'none';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>

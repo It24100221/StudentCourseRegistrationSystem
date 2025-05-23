@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Course Registration</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .courses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .course-image {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .course-details {
+            padding: 1.5rem;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .course-instructor {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-description {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #555;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .course-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .course-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 8px;
+            overflow: hidden;
+            animation: modalopen 0.5s;
+        }
+
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            background-color: var(--dark-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .enrollment-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .success-message {
+            display: none;
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .courses-container {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+            }
+
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <a href="index.html" class="nav-logo">University</a>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="course.html">Courses</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="feedback.html">Feedback</a>
+        <a href="support.html">Support</a>
+        <a href="login.html">Login</a>
+    </div>
+</nav>
+
+<header>
+    <h1>University Course Registration</h1>
+</header>
+
+<div class="container">
+    <h2>Available Courses</h2>
+    <p>Select from our wide range of courses to enhance your learning experience.</p>
+
+    <div class="courses-container">
+        <!-- Courses will be dynamically loaded here -->
+    </div>
+</div>
+
+<!-- See More Modal -->
+<div id="courseModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalCourseTitle">Course Title</h2>
+            <span class="close-btn">×</span>
+        </div>
+        <div class="modal-body">
+            <div class="course-details-modal">
+                <p><strong>Instructor:</strong> <span id="modalInstructor"></span></p>
+                <p><strong>Price:</strong> <span id="modalPrice"></span></p>
+                <p><strong>Duration:</strong> <span id="modalDuration"></span> weeks</p>
+                <p><strong>Description:</strong></p>
+                <p id="modalDescription"></p>
+                <p><strong>What You'll Learn:</strong></p>
+                <ul id="modalLearningPoints"></ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" id="enrollFromModal">Enroll Now</button>
+        </div>
+    </div>
+</div>
+
+<!-- Enrollment Modal -->
+<div id="enrollmentModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Course Enrollment</h2>
+            <span class="close-btn">×</span>
+        </div>
+        <div class="modal-body">
+            <div class="success-message" id="successMessage">
+                Enrollment successful! You will receive a confirmation email shortly.
+            </div>
+            <form id="enrollmentForm" class="enrollment-form">
+                <input type="hidden" id="enrollmentCourseId">
+                <div class="form-group">
+                    <label for="studentName">Full Name</label>
+                    <input type="text" id="studentName" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentEmail">Email</label>
+                    <input type="email" id="studentEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" required>
+                        <option value="">Select payment method</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="university_billing">University Billing</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelEnrollment">Cancel</button>
+            <button class="btn btn-primary" id="confirmEnrollment">Complete Enrollment</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DOM Elements
+    const courseModal = document.getElementById('courseModal');
+    const enrollmentModal = document.getElementById('enrollmentModal');
+    const closeBtns = document.querySelectorAll('.close-btn');
+    const enrollFromModal = document.getElementById('enrollFromModal');
+    const cancelEnrollment = document.getElementById('cancelEnrollment');
+    const confirmEnrollment = document.getElementById('confirmEnrollment');
+    const enrollmentForm = document.getElementById('enrollmentForm');
+    const successMessage = document.getElementById('successMessage');
+    const coursesContainer = document.querySelector('.courses-container');
+
+    // Current selected course
+    let currentCourseId = null;
+
+    // Fetch and render courses from backend
+    async function loadCourses() {
+        try {
+            const response = await fetch('http://localhost:9091/api/courses');
+            if (!response.ok) throw new Error('Failed to fetch courses');
+            const courses = await response.json();
+            renderCourses(courses);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+            coursesContainer.innerHTML = '<p>Failed to load courses. Please try again later.</p>';
+        }
+    }
+
+    // Render courses dynamically
+    function renderCourses(courses) {
+        coursesContainer.innerHTML = '';
+        courses.forEach(course => {
+            const courseCard = document.createElement('div');
+            courseCard.className = 'course-card';
+            courseCard.innerHTML = `
+                        <div class="course-image" style="background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                        <div class="course-details">
+                            <h3 class="course-title">${course.title}</h3>
+                            <p class="course-instructor">${course.instructor}</p>
+                            <p class="course-description">${course.description}</p>
+                            <p class="course-price">$${course.price.toFixed(2)}</p>
+                            <div class="course-actions">
+                                <button class="btn btn-outline see-more-btn" data-course="${course.id}">See More</button>
+                                <button class="btn btn-primary buy-btn" data-course="${course.id}">Enroll Now</button>
+                            </div>
+                        </div>
+                    `;
+            coursesContainer.appendChild(courseCard);
+        });
+
+        // Event Listeners for dynamically created buttons
+        document.querySelectorAll('.see-more-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentCourseId = e.target.getAttribute('data-course');
+                openCourseModal(currentCourseId);
+            });
+        });
+
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentCourseId = e.target.getAttribute('data-course');
+                openEnrollmentModal(currentCourseId);
+            });
+        });
+    }
+
+    // Event Listeners
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            courseModal.style.display = 'none';
+            enrollmentModal.style.display = 'none';
+        });
+    });
+
+    enrollFromModal.addEventListener('click', () => {
+        courseModal.style.display = 'none';
+        openEnrollmentModal(currentCourseId);
+    });
+
+    cancelEnrollment.addEventListener('click', () => {
+        enrollmentModal.style.display = 'none';
+    });
+
+    confirmEnrollment.addEventListener('click', async () => {
+        if (enrollmentForm.checkValidity()) {
+            try {
+                const studentName = document.getElementById('studentName').value;
+                const studentEmail = document.getElementById('studentEmail').value;
+                const studentId = document.getElementById('studentId').value;
+                const paymentMethod = document.getElementById('paymentMethod').value;
+
+                // Check if user is logged in (has email in localStorage)
+                const userEmail = localStorage.getItem('userEmail');
+
+                let response;
+
+                if (userEmail) {
+                    // Use the user enrollment endpoint if user is logged in
+                    const enrollmentData = {
+                        courseId: parseInt(currentCourseId),
+                        paymentMethod: paymentMethod
+                    };
+
+                    response = await fetch(`http://localhost:9091/api/enrollments/user-enrollment?userEmail=${encodeURIComponent(userEmail)}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(enrollmentData)
+                    });
+                } else {
+                    // Use the regular enrollment endpoint if user is not logged in
+                    const enrollmentData = {
+                        courseId: parseInt(currentCourseId),
+                        student: {
+                            studentId: studentId,
+                            fullName: studentName,
+                            email: studentEmail
+                        },
+                        paymentMethod: paymentMethod
+                    };
+
+                    response = await fetch('http://localhost:9091/api/enrollments', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(enrollmentData)
+                    });
+                }
+
+                if (!response.ok) throw new Error('Enrollment failed');
+
+                successMessage.style.display = 'block';
+                enrollmentForm.reset();
+
+                // Hide success message and modal after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    enrollmentModal.style.display = 'none';
+                }, 3000);
+            } catch (error) {
+                console.error('Error during enrollment:', error);
+                successMessage.style.display = 'block';
+                successMessage.style.backgroundColor = 'var(--accent-color)';
+                successMessage.textContent = 'Enrollment failed. Please try again.';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    successMessage.style.backgroundColor = 'var(--success-color)';
+                    successMessage.textContent = 'Enrollment successful! You will receive a confirmation email shortly.';
+                }, 3000);
+            }
+        } else {
+            enrollmentForm.reportValidity();
+        }
+    });
+
+    // Close modals when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === courseModal) {
+            courseModal.style.display = 'none';
+        }
+        if (e.target === enrollmentModal) {
+            enrollmentModal.style.display = 'none';
+        }
+    });
+
+    // Functions
+    async function openCourseModal(courseId) {
+        try {
+            const response = await fetch(`http://localhost:9091/api/courses/${courseId}`);
+            if (!response.ok) throw new Error('Failed to fetch course details');
+            const course = await response.json();
+
+            document.getElementById('modalCourseTitle').textContent = course.title;
+            document.getElementById('modalInstructor').textContent = course.instructor;
+            document.getElementById('modalPrice').textContent = `$${course.price.toFixed(2)}`;
+            document.getElementById('modalDuration').textContent = course.duration;
+            document.getElementById('modalDescription').textContent = course.description;
+
+            const learningPointsList = document.getElementById('modalLearningPoints');
+            learningPointsList.innerHTML = '';
+            course.learningPoints.forEach(point => {
+                const li = document.createElement('li');
+                li.textContent = point;
+                learningPointsList.appendChild(li);
+            });
+
+            courseModal.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching course details:', error);
+            alert('Failed to load course details. Please try again.');
+        }
+    }
+
+    function openEnrollmentModal(courseId) {
+        document.getElementById('enrollmentCourseId').value = courseId;
+
+        // Try to get logged in user info from localStorage
+        const userEmail = localStorage.getItem('userEmail');
+        const userName = localStorage.getItem('userName');
+
+        if (userEmail) {
+            document.getElementById('studentEmail').value = userEmail;
+            document.getElementById('studentEmail').readOnly = true;
+        }
+
+        if (userName) {
+            document.getElementById('studentName').value = userName;
+            document.getElementById('studentName').readOnly = true;
+        }
+
+        enrollmentModal.style.display = 'block';
+        successMessage.style.display = 'none';
+    }
+
+    // Function to get logged in user
+    function getLoggedInUser() {
+        return {
+            email: localStorage.getItem('userEmail'),
+            fullName: localStorage.getItem('userName')
+        };
+    }
+
+    // Load courses on page load
+    document.addEventListener('DOMContentLoaded', loadCourses);
+</script>
+</body>
+</html>

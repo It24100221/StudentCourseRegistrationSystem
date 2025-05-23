@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechEduca - Online Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #002147;
+            --accent-yellow: #FFD700;
+            --light-gray: #f8f9fa;
+            --dark-gray: #212529;
+            --highlight-yellow: rgba(255, 215, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9ff;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        nav img {
+            width: 150px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        nav img:hover {
+            transform: scale(1.05);
+        }
+
+        .navigation ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navigation ul li {
+            margin-left: 2rem;
+            position: relative;
+        }
+
+        .navigation ul li a {
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+
+        .navigation ul li a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .navigation ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background: var(--accent-yellow);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .navigation ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Home Section with Slideshow */
+        #home {
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(9, 5, 54, 0.3), rgba(5, 4, 46, 0.7));
+            z-index: 1;
+        }
+
+        #home h2 {
+            color: #fff;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        #home h2:hover {
+            transform: scale(1.02);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        #home p {
+            width: 50%;
+            color: #fff;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn {
+            margin-top: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn a {
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn a.blue {
+            color: #fff;
+            background: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn a.blue:hover {
+            background: var(--accent-yellow);
+            border-color: var(--accent-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn a.yellow {
+            color: var(--primary-blue);
+            background: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn a.yellow:hover {
+            color: #fff;
+            background: var(--accent-yellow);
+            border-color: var(--accent-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Features Section */
+        #features {
+            padding: 5rem 3rem;
+            text-align: center;
+        }
+
+        #features h1 {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        #features h1::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: var(--accent-yellow);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+
+        #features p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .fea-base {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .fea-box {
+            background: #fff;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fea-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .fea-box i {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .fea-box:hover i {
+            color: var(--accent-yellow);
+            transform: scale(1.2);
+        }
+
+        .fea-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .fea-box:hover h3 {
+            color: var(--accent-yellow);
+        }
+
+        .fea-box p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Courses Section - Modified for 3x3 grid */
+        #course {
+            padding: 5rem 3rem;
+            text-align: center;
+            background-color: #f5f7fa;
+        }
+
+        #course h1 {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        #course h1::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: var(--accent-yellow);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+
+        #course p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .course-box {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .courses {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .courses:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .courses img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .courses:hover img {
+            transform: scale(1.1);
+        }
+
+        .details {
+            padding: 1.5rem;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+            background: #fff;
+        }
+
+        .details span {
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        .details h6 {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            margin: 0.8rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .courses:hover .details h6 {
+            color: var(--accent-yellow);
+        }
+
+        .star {
+            color: var(--accent-yellow);
+            margin: 0.5rem 0;
+        }
+
+        .star span {
+            color: #777;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .cost {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .courses:hover .cost {
+            color: var(--accent-yellow);
+        }
+
+        /* Registration Section - Simplified */
+        #registration {
+            padding: 5rem 3rem;
+            background-image: linear-gradient(rgba(0, 33, 71, 0.8), rgba(0, 33, 71, 0.9)), url("https://wallpapers.com/images/high/college-graduation-pictures-l6rdxpbjcub86j1b-2.webp");
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .reminder h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .reminder p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-center {
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .btn-center a {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            font-weight: 600;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-center a:hover {
+            background: #fff;
+            color: var(--primary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Experts Section */
+        #experts {
+            padding: 5rem 3rem;
+            text-align: center;
+        }
+
+        #experts h1 {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        #experts h1::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: var(--accent-yellow);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+
+        #experts p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .expert-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .profile {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .profile img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 5px solid rgba(0,33,71,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .profile:hover img {
+            border-color: var(--accent-yellow);
+            transform: scale(1.05);
+        }
+
+        .profile h6 {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile:hover h6 {
+            color: var(--accent-yellow);
+        }
+
+        .profile p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pro-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .pro-links i {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f7fa;
+            color: var(--primary-blue);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pro-links i:hover {
+            background: var(--accent-yellow);
+            color: #fff;
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-blue);
+            color: #fff;
+            padding: 5rem 3rem 2rem;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent-yellow);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent-yellow);
+            transform: translateX(5px);
+        }
+
+        .subscribe input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .subscribe input::placeholder {
+            color: #ccc;
+        }
+
+        .subscribe a {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .subscribe a:hover {
+            background: #fff;
+            color: var(--primary-blue);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .copyright p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-yellow);
+            transform: translateY(-3px);
+        }
+
+        /* Highlight Effects */
+        a, button, .courses, .fea-box, .profile {
+            position: relative;
+            overflow: hidden;
+        }
+
+        a:hover::before, button:hover::before,
+        .courses:hover::before, .fea-box:hover::before,
+        .profile:hover::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--highlight-yellow) 0%, rgba(255,215,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Pop-up Effects */
+        .pop-up {
+            transition: all 0.3s ease;
+        }
+
+        .pop-up:hover {
+            transform: scale(1.05);
+        }
+
+        /* Slideshow animation */
+        @keyframes slideshow {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            20% { opacity: 1; }
+            30% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            animation: slideshow 20s infinite;
+            opacity: 0;
+        }
+
+        .slide:nth-child(1) {
+            background-image: url("https://wallpapers.com/images/featured/cambridge-university-k3uqfq0l7bwrrmpr.webp");
+            animation-delay: 0s;
+        }
+        .slide:nth-child(2) {
+            background-image: url("https://wallpapers.com/images/high/online-adult-university-scholar-aij7dtzslpxmhg0h.webp");
+            animation-delay: 5s;
+        }
+        .slide:nth-child(3) {
+            background-image: url("https://wallpapers.com/images/high/cheery-graduates-graduation-a1cxk69wkp1clbnr.webp");
+            animation-delay: 10s;
+        }
+        .slide:nth-child(4) {
+            background-image: url("https://wallpapers.com/images/high/online-adult-university-scholar-aij7dtzslpxmhg0h.webp");
+            animation-delay: 15s;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            #registration {
+                padding: 4rem 2rem;
+            }
+
+            .reminder h1 {
+                font-size: 2rem;
+            }
+
+            .course-box {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .navigation ul li {
+                margin-left: 1rem;
+            }
+
+            #home h2 {
+                font-size: 2rem;
+            }
+
+            #home p {
+                width: 80%;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .btn a {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navigation ul {
+                display: none;
+            }
+
+            #home h2 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn a {
+                width: 100%;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .course-box {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="https://wallpapers.com/images/high/auburn-university-logo-y89n0hzjv80wqvx1-2.webp" alt="TechEduca Logo" class="pop-up">
+    <div class="navigation">
+        <ul>
+            <li><a href="index.html" class="pop-up">Home</a></li>
+            <li><a href="about.html" class="pop-up">About</a></li>
+            <li><a href="course.html" class="pop-up">Courses</a></li>
+            <li><a href="schedule.html" class="pop-up">Schedule</a></li>
+            <li><a href="#gallery" class="pop-up">Gallery</a></li>
+            <li><a href="feedback.html" class="pop-up">Feedback</a></li>
+            <li><a href="support.html" class="pop-up">Contact</a></li>
+            <li><a href="login.html" class="pop-up">Admin</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section id="home">
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+
+    <h2 class="pop-up">Innovations from TechEduca</h2>
+    <p>At TechEduca, we redefine education through innovation, bridging technology and learning to empower students, inspire growth, and shape a smarter tomorrow for all who seek knowledge</p>
+    <div class="btn">
+        <a class="blue pop-up" href="login.html">My Profile</a>
+        <a class="yellow pop-up" href="login.html">Register now</a>
+    </div>
+</section>
+
+<section id="features">
+    <h1 class="pop-up">Awesome Features</h1>
+    <p>Replenish man have thing gathering lights yielding shall you</p>
+
+    <div class="fea-base">
+        <div class="fea-box pop-up">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Scholarship Facility</h3>
+            <p>One make creepeth, man bearing their firmament won't great heaven</p>
+        </div>
+        <div class="fea-box pop-up">
+            <i class="fas fa-file-certificate"></i>
+            <h3>Online Courses</h3>
+            <p>One make creepeth, man bearing their firmament won't great heaven</p>
+        </div>
+        <div class="fea-box pop-up">
+            <i class="fas fa-award"></i>
+            <h3>Global Certification</h3>
+            <p>One make creepeth, man bearing their firmament won't great heaven</p>
+        </div>
+    </div>
+</section>
+
+<section id="course">
+    <h1 class="pop-up">Our Popular Courses</h1>
+    <p>Replenish your mind and spirit with the wisdom of our exceptional courses.</p>
+
+    <div class="course-box">
+        <div class="courses pop-up">
+            <img src="https://wallpapers.com/images/high/data-science-concepts-illustration-3v0x9ykzsxnd2rxm.webp" alt="Data Science Course">
+            <div class="details">
+                <span>Updated 25/3/07</span>
+                <h6>Data Science Course</h6>
+                <div class="star">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(239)</span>
+                </div>
+                <div class="cost">see more>></div>
+            </div>
+        </div>
+
+        <div class="courses pop-up">
+            <img src="https://wallpapers.com/images/high/java-script_-logo_with_-transparency-qkt5hlno7hz4iyl0-2.webp" alt="JavaScript Course">
+            <div class="details">
+                <span>Updated 25/3/24</span>
+                <h6>JavaScript Course</h6>
+                <div class="star">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(439)</span>
+                </div>
+                <div class="cost">see more>></div>
+            </div>
+        </div>
+
+        <div class="courses pop-up">
+            <img src="https://wallpapers.com/images/high/2440x1440-programming-background-2440-x-1440-3eq759scmc3hn5ar.webp" alt="Python Programming">
+            <div class="details">
+                <span>Updated 25/3/25</span>
+                <h6>Python Programming</h6>
+                <div class="star">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>(589)</span>
+                </div>
+                <div class="cost">see more>></div>
+            </div>
+        </div>
+
+        <div class="courses pop-up">
+            <img src="https://wallpapers.com/images/high/web-development-concepts-showcase-56lizacbjvy8ahd4-2.webp" alt="Web Development">
+            <div class="details">
+                <span>Updated 23/3/25</span>
+                <h6>Web Development</h6>
+                <div class="star">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(789)</span>
+                </div>
+                <div class="cost">see more>></div>
+            </div>
+        </div>
+
+        <div class="courses pop-up">
+            <img src="https://wallpapers.com/images/high/mobile-app-development-team-working-r4ypct303dqh24e2.webp" alt="Mobile App Development">
+            <div class="details">
+                <span>Updated 25/3/19</span>
+                <h6>Mobile App Development</h6>
+                <div class="star">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(329)</span>
+                </div>
+                <div class="cost">see more>></div>
+            </div>
+        </div>
+
+        <div class="courses pop-up">
+            <img src="https://wallpapers.com/images/high/game-development-2000-x-1333-wallpaper-i3eyywjsfmou1hm5.webp" alt="Game Development Course">
+            <div class="details">
+                <span>Updated 25/2/04</span>
+                <h6>Game Development Course</h6>
+                <div class="star">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(1039)</span>
+                </div>
+                <div class="cost">see more>></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Simplified Registration Section -->
+<section id="registration">
+    <div class="reminder">
+        <h1 class="pop-up">Ready to Start Learning?</h1>
+        <p>Join thousands of students who are advancing their careers with our courses</p>
+        <div class="btn-center">
+            <a href="login.html" class="pop-up">Get Started Now</a>
+        </div>
+    </div>
+</section>
+
+<section id="experts">
+    <h1 class="pop-up">Community Experts</h1>
+    <p>Replenish man have thing gathering lights yielding shall you</p>
+    <div class="expert-box">
+        <div class="profile pop-up">
+            <img src="https://wallpapers.com/images/high/employment-rights-lawyer-png-79-ikp0d3mbnps0y0ip.webp" alt="Kaveesha Jayasekara">
+            <h6>Kaveesha Jayasekara</h6>
+            <p>JavaScript & Algorithm Expert</p>
+            <div class="pro-links">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-linkedin-in"></i>
+            </div>
+        </div>
+        <div class="profile pop-up">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr_ngH-b19o0ISDWFaJZhHxOpS2LZYCa-xJg&s" alt="Jason Roy">
+            <h6>Miona De Silva</h6>
+            <p>Data Science Specialist</p>
+            <div class="pro-links">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-linkedin-in"></i>
+            </div>
+        </div>
+        <div class="profile pop-up">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwCpBMpYGUHPp1XJTW7knqFoqAYketRWFJ7A&s" alt="Sophia Chen">
+            <h6>Ashvin Shiwanadam</h6>
+            <p>Full Stack Developer</p>
+            <div class="pro-links">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-linkedin-in"></i>
+            </div>
+        </div>
+        <div class="profile pop-up">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGMS8oko5jOb1Us6KRww74Sr-ABVomkI8xyQ&s" alt="inky koswatta">
+            <h6>Sopina Chen</h6>
+            <p>Game Development Expert</p>
+            <div class="pro-links">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-linkedin-in"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>Top Products</h3>
+            <ul>
+                <li><a href="#" class="pop-up">Manage Reputation</a></li>
+                <li><a href="#" class="pop-up">Power Tools</a></li>
+                <li><a href="#" class="pop-up">Managed Website</a></li>
+                <li><a href="#" class="pop-up">Marketing Service</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>More Products</h3>
+            <ul>
+                <li><a href="#" class="pop-up">Power Tools</a></li>
+                <li><a href="#" class="pop-up">Jobs</a></li>
+                <li><a href="#" class="pop-up">Marketing Service</a></li>
+                <li><a href="#" class="pop-up">Manage Reputation</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>Guides</h3>
+            <ul>
+                <li><a href="#" class="pop-up">Research</a></li>
+                <li><a href="#" class="pop-up">Experts</a></li>
+                <li><a href="#" class="pop-up">Managed Website</a></li>
+                <li><a href="#" class="pop-up">Marketing Service</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>Newsletter</h3>
+            <p>You can trust us. We only send promo offers.</p>
+            <div class="subscribe">
+                <input type="text" placeholder="Your email address">
+                <a href="#" class="pop-up">Subscribe</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright">
+        <p>Copyright ©2025 All rights reserved | This template is made by TechEduca</p>
+        <div class="footer-links">
+            <a href="#" class="pop-up"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="pop-up"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="pop-up"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

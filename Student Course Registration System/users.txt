@@ -1,0 +1,1 @@
+[{"email":"admin@gmail.com","fullName":"Admin User","password":"admin","registrationTime":[2025,5,22,12,37,31,290253600]}]
