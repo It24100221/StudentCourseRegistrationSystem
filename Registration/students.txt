@@ -1,1 +1,0 @@
-[{"studentId":"123","fullName":"Chandima","email":"mama@gmail.com"},{"studentId":"1223","fullName":"oshan","email":"bhgyu@j"},{"studentId":"12345","fullName":"oshan charuka","email":"sggs@gmail.com"},{"studentId":"IT24101521","fullName":"Oshini Bandara","email":"gayanjaleeoshini@gmail.com"},{"studentId":"1234","fullName":"oshini ","email":"oshini@gmail.com"}]
