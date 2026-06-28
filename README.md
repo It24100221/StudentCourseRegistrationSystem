@@ -119,6 +119,7 @@ Students can provide feedback on courses they've taken:
 
 ## 🆘 Support System
 
+
 Two types of support requests are available:
 
 1. Academic Support - For course-related questions
