@@ -38,6 +38,7 @@ The Student Course Registration System is a full-stack Spring Boot web applicati
 | Validation | Jakarta Validation |
 | JSON Processing | Jackson |
 
+
 ## 📂 File-Based Storage
 
 All data is persisted in text files instead of a database:
