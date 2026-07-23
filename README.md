@@ -53,7 +53,6 @@ All data is persisted in text files instead of a database:
 
 ## 🚀 Running the Application
 
-
 ```
 ./mvnw.cmd spring-boot:run
 ```
